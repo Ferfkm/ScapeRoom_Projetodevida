@@ -1,25 +1,75 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <title>Escape Room: Recuperando o Código</title>
     <link rel="stylesheet" href="style.css">
-    <link href="prism/prism.css" rel="stylesheet">
-    <title>ScapeRoom CSS | FlashCards</title>
 </head>
 <body>
-    <div class="caixa-principal">        
-        <div class="caixa-perguntas"></div>
-        <div class="caixa-alternativas"></div>
-        <div class="caixa-resultado">
-            <p class="texto-resultado"></p>
-        </div>
+
+    <header>
+        <h1>🔑 ESCAPE ROOM: JavaScript Core</h1>
+        <p>Responda às perguntas de JS para descriptografar o código do seu Projeto de Vida!</p>
+    </header>
+
+    <div class="container-geral">
+        <main class="jogo-container">
+            
+            <div class="aba-conteudo ativo" id="fase-0">
+                <h2>Fase 1: Manipulação do DOM</h2>
+                <p>Para capturar múltiplos elementos do HTML que possuem a mesma classe (como os seus <code>.botao</code>), qual método do <code>document</code> nós utilizamos no JavaScript?</p>
+                
+                <div class="input-grupo">
+                    <input type="text" id="resposta-0" placeholder="Ex: querySelector...">
+                    <button onclick="verificarFase(0, 'queryselectorall')">Enviar Resposta</button>
+                </div>
+            </div>
+
+            <div class="aba-conteudo" id="fase-1">
+                <h2>Fase 2: Estrutura de Dados</h2>
+                <p>No seu código, você agrupou as variáveis <code>tempoObjetivo</code> dentro de colchetes: <code>[tempoObjetivo1, ...]</code>. Qual é o nome dessa estrutura de dados em JavaScript usada para armazenar listas ordenadas?</p>
+                
+                <div class="input-grupo">
+                    <input type="text" id="resposta-1" placeholder="Ex: objeto, variavel...">
+                    <button onclick="verificarFase(1, 'array')">Enviar Resposta</button>
+                </div>
+            </div>
+
+            <div class="aba-conteudo" id="fase-2">
+                <h2>Fase 3: Laços de Repetição</h2>
+                <p>Qual palavra-chave/estrutura de repetição foi utilizada no seu projeto para percorrer todos os botões e contadores usando a sintaxe <code>(let i = 0; i < limite; i++)</code>?</p>
+                
+                <div class="input-grupo">
+                    <input type="text" id="resposta-2" placeholder="Ex: while, if...">
+                    <button onclick="verificarFase(2, 'for')">Enviar Resposta</button>
+                </div>
+            </div>
+
+            <div class="aba-conteudo" id="fase-3">
+                <h2>Fase 4: Blocos Reutilizáveis</h2>
+                <p>Para isolar a lógica matemática que calcula os dias, horas e minutos, você criou um bloco reutilizável chamado <code>calculaTempo</code>. Qual palavra-chave usamos no JS para declarar isso?</p>
+                
+                <div class="input-grupo">
+                    <input type="text" id="resposta-3" placeholder="Ex: let, var...">
+                    <button onclick="verificarFase(3, 'function')">Enviar Resposta</button>
+                </div>
+            </div>
+
+            <div class="aba-conteudo" id="fase-vitoria">
+                <h2 style="color: #2ed573;">🎉 CÓDIGO TOTALMENTE RECUPERADO!</h2>
+                <p>Você provou conhecer os fundamentos do JavaScript e salvou o projeto.</p>
+                <button onclick="window.location.reload()" style="background-color: #1e90ff; width: 100%;">Jogar Novamente</button>
+            </div>
+
+        </main>
+
+        <aside class="terminal-container">
+            <h3>💻 Código Recuperado:</h3>
+            <pre><code id="codigo-recuperado">// Decifre os enigmas para gerar o código...</code></pre>
+        </aside>
     </div>
-    <script src="codigoFonte.js"></script>
-    <script src="perguntas.js"></script>
+
     <script src="script.js"></script>
-    <script src="prism/prism.js"></script>
 </body>
 </html>

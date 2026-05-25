@@ -1,192 +1,90 @@
-const caixaPrincipal = document.querySelector(".caixa-principal");
-const caixaPerguntas = document.querySelector(".caixa-perguntas");
-const caixaAlternativas = document.querySelector(".caixa-alternativas");
-const caixaResultado = document.querySelector(".caixa-resultado");
-const textoResultado = document.querySelector(".texto-resultado");
+// Os 4 pedaços do seu código original que serão liberados
+const fragmentosCodigo = [
+`// [PARTE 1 LIBERADA] - Controle de Abas
+const botoes = document.querySelectorAll(".botao");
+const textos = document.querySelectorAll(".aba-conteudo");
 
-let atual = 0;
-let perguntaAtual;
-let historiaFinal = "";
-
-function mostraPergunta(){
-    if(atual >= perguntas.length){
-        mostraResultado();
-        return;
-    }
-    caixaPerguntas.textContent = "";
-    perguntaAtual = perguntas[atual];
-    const img = document.createElement("img");
-
-    if(perguntaAtual.imagem != ""){
-        img.src = perguntaAtual.imagem;
-    }    
-
-    const enunciado = document.createElement("div");
-    enunciado.classList.add("titulo");
-    enunciado.innerHTML = perguntaAtual.enunciado;
-
-   
-    
-    if(perguntaAtual.imagem != ""){        
-        if (perguntaAtual.posicaoImg == "top"){
-            caixaPerguntas.appendChild(img);
-            caixaPerguntas.appendChild(enunciado);
-        }else{
-            caixaPerguntas.appendChild(enunciado);
-            caixaPerguntas.appendChild(img);
+for (let i = 0; i < botoes.length; i++) {
+    botoes[i].onclick = function() {
+        for (let j = 0; j < botoes.length; j++) {
+            botoes[j].classList.remove("ativo");
+            textos[j].classList.remove("ativo");
         }
-    }else{
-        caixaPerguntas.appendChild(enunciado);
+        botoes[i].classList.add("ativo");
+        textos[i].classList.add("ativo");
     }
-    
-    caixaAlternativas.textContent = "";
-    mostraAlternativas();
 }
+`,
+`
+// [PARTE 2 LIBERADA] - Definição dos Alvos
+const contadores = document.querySelectorAll(".contador");
+const tempoObjetivo1 = new Date("2026-12-28T23:59:59");
+const tempoObjetivo2 = new Date("2026-12-28T23:59:59");
+const tempoObjetivo3 = new Date("2026-12-28T23:59:59");
+const tempoObjetivo4 = new Date("2026-12-28T23:59:59");
 
-function mostraAlternativas(){
-    for(const alternativa of perguntaAtual.alternativas){
-        const botaoAlternativas = document.createElement("button");
-        botaoAlternativas.innerHTML = alternativa.texto;        
+const tempos = [
+    tempoObjetivo1, tempoObjetivo2, tempoObjetivo3, tempoObjetivo4
+];
+`,
+`
+// [PARTE 3 LIBERADA] - Inicialização dos Contadores
+for (let i = 0; i < contadores.length; i++) {
+    contadores[i].textContent = calculaTempo(tempos[i]);
+}
+contadores[0].textContent = calculaTempo(tempoObjetivo1);
+`,
+`
+// [PARTE 4 LIBERADA] - Função de Cálculo Matemático
+function calculaTempo(tempoObjetivo1) {
+    let tempoAtual = new Date();
+    let tempoFinal = tempoObjetivo1 - tempoAtual;
+    let segundos = Math.floor(tempoFinal / 1000);
+    let minutos = Math.floor(segundos / 60);
+    let horas = Math.floor(minutos / 60);
+    let dias = Math.floor(horas / 24);
+
+    segundos %= 60;
+    minutos %= 60;
+    horas %= 24;
+
+    return dias + " dias "
+        + horas + " horas "
+        + minutos + " minutos "
+        + segundos + " segundos ";
+}
+`
+];
+
+const fases = document.querySelectorAll(".aba-conteudo");
+const displayCodigo = document.getElementById("codigo-recuperado");
+let faseAtualIndex = 0;
+let codigoCompletoMontado = "";
+
+function verificarFase(indexFase, respostaCorreta) {
+    const inputJogador = document.getElementById(`resposta-${indexFase}`);
+    const respostaUsuario = inputJogador.value.toLowerCase().trim();
+
+    if (respostaUsuario === respostaCorreta) {
+        alert("🔓 Resposta Correta! Fragmento de código descriptografado.");
+
+        // Se for o primeiro acerto, limpa o comentário inicial do terminal
+        if (faseAtualIndex === 0) {
+            codigoCompletoMontado = "";
+        }
+
+        // Concatena o pedaço de código liberado
+        codigoCompletoMontado += fragmentosCodigo[indexFase];
+        displayCodigo.textContent = codigoCompletoMontado;
+
+        // Avança a interface para a próxima fase
+        fases[faseAtualIndex].classList.remove("ativo");
+        faseAtualIndex++;
         
-        if(alternativa.img != ""){
-            const quebraLinha = document.createElement("br");
-            botaoAlternativas.appendChild(quebraLinha);
-            const imgAlternativa = document.createElement("img");
-            imgAlternativa.src = alternativa.imgThumb;
-            botaoAlternativas.appendChild(imgAlternativa);
-        }         
-
-        botaoAlternativas.addEventListener("click", () => respostaSelecionada(alternativa, alternativa.recompensa));
-        caixaAlternativas.appendChild(botaoAlternativas)
+        if (faseAtualIndex < fases.length) {
+            fases[faseAtualIndex].classList.add("ativo");
+        }
+    } else {
+        alert("❌ Resposta incorreta! O sistema recusou o comando. Tente novamente.");
     }
 }
-
-function respostaSelecionada(opcaoSelecionada, recompensa){
-    if (opcaoSelecionada.blocoCSS != "" && opcaoSelecionada.propriedadeCSS != "" && opcaoSelecionada.correta == true){ 
-        codigoFonte[opcaoSelecionada.blocoCSS][opcaoSelecionada.propriedadeCSS] = opcaoSelecionada.valorPropriedadeCSS;
-    }
-
-    if(recompensa == true && opcaoSelecionada.correta == true){        
-        const titulo = document.createElement("div");
-        titulo.classList.add("titulo");
-        titulo.innerHTML = opcaoSelecionada.afirmacao;
-        caixaPerguntas.textContent = "";
-        caixaPerguntas.appendChild(titulo);
-        
-        if(opcaoSelecionada.linguagem != ""){
-            const pre = document.createElement("pre");
-            const code = document.createElement("code");
-            pre.classList.add(opcaoSelecionada.linguagem);
-            code.classList.add(opcaoSelecionada.linguagem);
-            code.textContent = opcaoSelecionada.textoRecompensa;
-            pre.appendChild(code);
-            caixaPerguntas.appendChild(pre);
-            Prism.highlightElement(code);
-        }else{
-            const texto = document.createElement("div");
-            texto.classList.add("titulo");
-            texto.innerHTML = opcaoSelecionada.textoRecompensa;
-            caixaPerguntas.appendChild(texto)
-        }
-        const botaoAvancar = document.createElement("button");
-        botaoAvancar.addEventListener("click", () => respostaSelecionada(opcaoSelecionada, false));
-        botaoAvancar.innerHTML = "<span>Ok, posso avançar agora!</span>"
-        caixaAlternativas.textContent = "";
-        caixaAlternativas.appendChild(botaoAvancar);
-        return;
-    }
-    if (opcaoSelecionada.correta == false) {
-        const titulo = document.createElement("h1");
-        //titulo.classList.add("titulo");
-        titulo.innerHTML = perguntaAtual.textoErrado;
-        caixaPerguntas.textContent = "";
-        caixaPerguntas.appendChild(titulo);
-
-        const botaoAvancar = document.createElement("button");
-        botaoAvancar.addEventListener("click", () => mostraPergunta());
-        botaoAvancar.innerHTML = "<span>Ok, vou tentar novamente!</span>"
-        caixaAlternativas.textContent = "";
-        caixaAlternativas.appendChild(botaoAvancar);
-        return;
-    }
-    if(perguntaAtual.mostraBlocoCSS == true){        
-        const titulo = document.createElement("div");
-        titulo.classList.add("titulo");
-        titulo.innerHTML = "<img src='assets/img/recompensa.png' style='height:100px;' ><br/><span class='destaque'>Recompensa desbloqueada!</span> <span class='destaque'>Copie</span> o código CSS abaixo e <span class='destaque'>cole</span> no seu arquivo <span class='code'>style.css</span>";
-        caixaPerguntas.textContent = "";
-        caixaPerguntas.appendChild(titulo);
-        
-
-        const pre = document.createElement("pre");
-        const code = document.createElement("code");
-        pre.classList.add("language-css");
-        code.classList.add("language-css");
-        code.textContent = mostraBlocoCSS(perguntaAtual.blocoCSS);
-        pre.appendChild(code);
-        caixaPerguntas.appendChild(pre);
-        Prism.highlightElement(code);
-        
-        const botaoAvancar = document.createElement("button");
-        atual++;
-        botaoAvancar.addEventListener("click", () => mostraPergunta());
-        botaoAvancar.innerHTML = "<span>Ok, posso avançar agora!</span>"
-        caixaAlternativas.textContent = "";
-        caixaAlternativas.appendChild(botaoAvancar);
-        return;
-    }
-        //const afirmacoes = opcaoSelecionada.afirmacao;
-        //historiaFinal += afirmacoes + " ";
-        atual++;
-        mostraPergunta();
-    
-}
-
-function mostraResultado(){
-    caixaPerguntas.textContent = "";
-    caixaAlternativas.textContent = "";
-    // const titulo = document.createElement("div");
-    // titulo.classList.add("titulo");
-    // titulo.innerHTML = "Parabéns você escapou da página!"
-    // caixaPerguntas.appendChild(titulo);
-
-    const texto = document.createElement("div");
-    texto.classList.add("titulo");
-    texto.innerHTML = `<img src='assets/img/pagina_final.gif' style='width:450px'><br />Se você coletou todas as suas recompensas e as inseriu em seu arquivo <span class='code'>style.css</span>, você agora escapou desta página com uma parte do código de estilo CSS para construir seu projeto de FlashCards.
-    <br /> <br /> Agora, abra seu <span class='code'>index.html</span> no navegador para visualizar a interpretação do seu trabalho e compartilhe essa experiência com seus colegas de turma! `
-    caixaPerguntas.appendChild(texto);
-}
-
-function mostraBlocoCSS(seletor) {
-    let blocoEstilos = `${seletor} {\n`;
-    let importar= "";
-    let variaveisRoot = ""; 
-    
-    for (let propriedade in codigoFonte[seletor]) {        
-        if (propriedade == "font-family"){
-            importar = `${importFonts[codigoFonte[seletor][propriedade]]}\n\n`;
-        }   
-        if (propriedade == "--text-color"){
-            variaveisRoot += `  ${propriedade}: ${codigoFonte[seletor][propriedade]};\n`;
-            continue;
-        }
-        if (propriedade == "--card-front-color"){
-            variaveisRoot += `  ${propriedade}: ${codigoFonte[seletor][propriedade]};\n`;
-            continue;
-        }
-        if (propriedade == "--card-back-color"){
-            variaveisRoot += `  ${propriedade}: ${codigoFonte[seletor][propriedade]};\n`;
-            continue;
-        }
-        blocoEstilos += `  ${propriedade}: ${codigoFonte[seletor][propriedade]};\n`;
-    }
-    blocoEstilos += `}\n`;
-    if (variaveisRoot != ""){
-        variaveisRoot = `:root{\n${variaveisRoot}}\n\n`;
-    }
-    
-    return importar+variaveisRoot+blocoEstilos;
-}
-
-
-
-mostraPergunta(); 
