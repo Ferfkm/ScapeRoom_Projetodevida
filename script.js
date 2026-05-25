@@ -1,81 +1,192 @@
-// ==========================================
-// 1. SISTEMA DE ABAS (SEU CÓDIGO ORIGINAL INTEGRADO)
-// ==========================================
-const botoes = document.querySelectorAll(".botao");
-const textos = document.querySelectorAll(".aba-conteudo");
+const caixaPrincipal = document.querySelector(".caixa-principal");
+const caixaPerguntas = document.querySelector(".caixa-perguntas");
+const caixaAlternativas = document.querySelector(".caixa-alternativas");
+const caixaResultado = document.querySelector(".caixa-resultado");
+const textoResultado = document.querySelector(".texto-resultado");
 
-for (let i = 0; i < botoes.length; i++) {
-    botoes[i].onclick = function() {
-        for (let j = 0; j < botoes.length; j++) {
-            botoes[j].classList.remove("ativo");
-            textos[j].classList.remove("ativo");
+let atual = 0;
+let perguntaAtual;
+let historiaFinal = "";
+
+function mostraPergunta(){
+    if(atual >= perguntas.length){
+        mostraResultado();
+        return;
+    }
+    caixaPerguntas.textContent = "";
+    perguntaAtual = perguntas[atual];
+    const img = document.createElement("img");
+
+    if(perguntaAtual.imagem != ""){
+        img.src = perguntaAtual.imagem;
+    }    
+
+    const enunciado = document.createElement("div");
+    enunciado.classList.add("titulo");
+    enunciado.innerHTML = perguntaAtual.enunciado;
+
+   
+    
+    if(perguntaAtual.imagem != ""){        
+        if (perguntaAtual.posicaoImg == "top"){
+            caixaPerguntas.appendChild(img);
+            caixaPerguntas.appendChild(enunciado);
+        }else{
+            caixaPerguntas.appendChild(enunciado);
+            caixaPerguntas.appendChild(img);
         }
-        botoes[i].classList.add("ativo");
-        textos[i].classList.add("ativo");
+    }else{
+        caixaPerguntas.appendChild(enunciado);
+    }
+    
+    caixaAlternativas.textContent = "";
+    mostraAlternativas();
+}
+
+function mostraAlternativas(){
+    for(const alternativa of perguntaAtual.alternativas){
+        const botaoAlternativas = document.createElement("button");
+        botaoAlternativas.innerHTML = alternativa.texto;        
+        
+        if(alternativa.img != ""){
+            const quebraLinha = document.createElement("br");
+            botaoAlternativas.appendChild(quebraLinha);
+            const imgAlternativa = document.createElement("img");
+            imgAlternativa.src = alternativa.imgThumb;
+            botaoAlternativas.appendChild(imgAlternativa);
+        }         
+
+        botaoAlternativas.addEventListener("click", () => respostaSelecionada(alternativa, alternativa.recompensa));
+        caixaAlternativas.appendChild(botaoAlternativas)
     }
 }
 
-// ==========================================
-// 2. CRONÔMETROS DO GAME (SEU CÓDIGO EXPANDIDO E CORRIGIDO)
-// ==========================================
-const contadores = document.querySelectorAll(".contador");
-
-// Definição das datas alvo futuras (Ano atual: 2026/2027)
-const tempoObjetivo1 = new Date("2026-12-28T23:59:59");
-const tempoObjetivo2 = new Date("2027-03-15T23:59:59");
-const tempoObjetivo3 = new Date("2027-06-20T23:59:59");
-const tempoObjetivo4 = new Date("2027-12-31T23:59:59");
-
-const tempos = [tempoObjetivo1, tempoObjetivo2, tempoObjetivo3, tempoObjetivo4];
-
-// Função que calcula a diferença de tempo
-function calculaTempo(tempoObjetivo) {
-    let tempoAtual = new Date();
-    let tempoFinal = tempoObjetivo - tempoAtual;
-
-    if (tempoFinal <= 0) {
-        return "Tempo Esgotado!";
+function respostaSelecionada(opcaoSelecionada, recompensa){
+    if (opcaoSelecionada.blocoCSS != "" && opcaoSelecionada.propriedadeCSS != "" && opcaoSelecionada.correta == true){ 
+        codigoFonte[opcaoSelecionada.blocoCSS][opcaoSelecionada.propriedadeCSS] = opcaoSelecionada.valorPropriedadeCSS;
     }
 
-    let segundos = Math.floor(tempoFinal / 1000);
-    let minutos = Math.floor(segundos / 60);
-    let horas = Math.floor(minutos / 60);
-    let dias = Math.floor(horas / 24);
-
-    segundos %= 60;
-    minutos %= 60;
-    horas %= 24;
-
-    // Espaçamento adicionado entre as palavras para melhor leitura na tela
-    return dias + " dias " + horas + " horas " + minutos + " minutos " + segundos + " segundos";
-}
-
-// Função para atualizar todos os contadores da tela de uma vez só
-function atualizaCronometro() {
-    for (let i = 0; i < contadores.length; i++) {
-        contadores[i].textContent = calculaTempo(tempos[i]);
+    if(recompensa == true && opcaoSelecionada.correta == true){        
+        const titulo = document.createElement("div");
+        titulo.classList.add("titulo");
+        titulo.innerHTML = opcaoSelecionada.afirmacao;
+        caixaPerguntas.textContent = "";
+        caixaPerguntas.appendChild(titulo);
+        
+        if(opcaoSelecionada.linguagem != ""){
+            const pre = document.createElement("pre");
+            const code = document.createElement("code");
+            pre.classList.add(opcaoSelecionada.linguagem);
+            code.classList.add(opcaoSelecionada.linguagem);
+            code.textContent = opcaoSelecionada.textoRecompensa;
+            pre.appendChild(code);
+            caixaPerguntas.appendChild(pre);
+            Prism.highlightElement(code);
+        }else{
+            const texto = document.createElement("div");
+            texto.classList.add("titulo");
+            texto.innerHTML = opcaoSelecionada.textoRecompensa;
+            caixaPerguntas.appendChild(texto)
+        }
+        const botaoAvancar = document.createElement("button");
+        botaoAvancar.addEventListener("click", () => respostaSelecionada(opcaoSelecionada, false));
+        botaoAvancar.innerHTML = "<span>Ok, posso avançar agora!</span>"
+        caixaAlternativas.textContent = "";
+        caixaAlternativas.appendChild(botaoAvancar);
+        return;
     }
+    if (opcaoSelecionada.correta == false) {
+        const titulo = document.createElement("h1");
+        //titulo.classList.add("titulo");
+        titulo.innerHTML = perguntaAtual.textoErrado;
+        caixaPerguntas.textContent = "";
+        caixaPerguntas.appendChild(titulo);
+
+        const botaoAvancar = document.createElement("button");
+        botaoAvancar.addEventListener("click", () => mostraPergunta());
+        botaoAvancar.innerHTML = "<span>Ok, vou tentar novamente!</span>"
+        caixaAlternativas.textContent = "";
+        caixaAlternativas.appendChild(botaoAvancar);
+        return;
+    }
+    if(perguntaAtual.mostraBlocoCSS == true){        
+        const titulo = document.createElement("div");
+        titulo.classList.add("titulo");
+        titulo.innerHTML = "<img src='assets/img/recompensa.png' style='height:100px;' ><br/><span class='destaque'>Recompensa desbloqueada!</span> <span class='destaque'>Copie</span> o código CSS abaixo e <span class='destaque'>cole</span> no seu arquivo <span class='code'>style.css</span>";
+        caixaPerguntas.textContent = "";
+        caixaPerguntas.appendChild(titulo);
+        
+
+        const pre = document.createElement("pre");
+        const code = document.createElement("code");
+        pre.classList.add("language-css");
+        code.classList.add("language-css");
+        code.textContent = mostraBlocoCSS(perguntaAtual.blocoCSS);
+        pre.appendChild(code);
+        caixaPerguntas.appendChild(pre);
+        Prism.highlightElement(code);
+        
+        const botaoAvancar = document.createElement("button");
+        atual++;
+        botaoAvancar.addEventListener("click", () => mostraPergunta());
+        botaoAvancar.innerHTML = "<span>Ok, posso avançar agora!</span>"
+        caixaAlternativas.textContent = "";
+        caixaAlternativas.appendChild(botaoAvancar);
+        return;
+    }
+        //const afirmacoes = opcaoSelecionada.afirmacao;
+        //historiaFinal += afirmacoes + " ";
+        atual++;
+        mostraPergunta();
+    
 }
 
-// Executa a função a cada 1000 milissegundos (1 segundo) em tempo real
-setInterval(atualizaCronometro, 1000);
+function mostraResultado(){
+    caixaPerguntas.textContent = "";
+    caixaAlternativas.textContent = "";
+    // const titulo = document.createElement("div");
+    // titulo.classList.add("titulo");
+    // titulo.innerHTML = "Parabéns você escapou da página!"
+    // caixaPerguntas.appendChild(titulo);
 
-// Executa imediatamente uma vez ao carregar a página para não iniciar em branco
-atualizaCronometro();
+    const texto = document.createElement("div");
+    texto.classList.add("titulo");
+    texto.innerHTML = `<img src='assets/img/pagina_final.gif' style='width:450px'><br />Se você coletou todas as suas recompensas e as inseriu em seu arquivo <span class='code'>style.css</span>, você agora escapou desta página com uma parte do código de estilo CSS para construir seu projeto de FlashCards.
+    <br /> <br /> Agora, abra seu <span class='code'>index.html</span> no navegador para visualizar a interpretação do seu trabalho e compartilhe essa experiência com seus colegas de turma! `
+    caixaPerguntas.appendChild(texto);
+}
+
+function mostraBlocoCSS(seletor) {
+    let blocoEstilos = `${seletor} {\n`;
+    let importar= "";
+    let variaveisRoot = ""; 
+    
+    for (let propriedade in codigoFonte[seletor]) {        
+        if (propriedade == "font-family"){
+            importar = `${importFonts[codigoFonte[seletor][propriedade]]}\n\n`;
+        }   
+        if (propriedade == "--text-color"){
+            variaveisRoot += `  ${propriedade}: ${codigoFonte[seletor][propriedade]};\n`;
+            continue;
+        }
+        if (propriedade == "--card-front-color"){
+            variaveisRoot += `  ${propriedade}: ${codigoFonte[seletor][propriedade]};\n`;
+            continue;
+        }
+        if (propriedade == "--card-back-color"){
+            variaveisRoot += `  ${propriedade}: ${codigoFonte[seletor][propriedade]};\n`;
+            continue;
+        }
+        blocoEstilos += `  ${propriedade}: ${codigoFonte[seletor][propriedade]};\n`;
+    }
+    blocoEstilos += `}\n`;
+    if (variaveisRoot != ""){
+        variaveisRoot = `:root{\n${variaveisRoot}}\n\n`;
+    }
+    
+    return importar+variaveisRoot+blocoEstilos;
+}
 
 
-// ==========================================
-// 3. MECÂNICA DO ESCAPE ROOM (CUSTOMIZADOR DE CSS)
-// ==========================================
-function verificarSala1() {
-    const inputVal = document.getElementById("input1").value;
-    const previewBox = document.getElementById("preview1");
 
-    // Aplica o código CSS digitado pelo usuário diretamente na caixa de exibição
-    previewBox.style.cssText = inputVal;
-
-    // Remove espaços e converte para minúsculo para facilitar a validação do jogador
-    const codigoLimpo = inputVal.replace(/\s+/g, '').toLowerCase();
-
-    // Verifica se ele digitou corretamente a propriedade solicitada
-    if (codigoLimpo.includes("background
+mostraPergunta(); 
