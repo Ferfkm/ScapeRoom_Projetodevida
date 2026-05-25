@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room - Projeto de Vida</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>🔐 Escape Room: Projeto de Vida</h1>
+        <p>Decifre os códigos, customize os estilos e alcance seus objetivos antes que o tempo acabe!</p>
+    </header>
+
+    <main>
+        <nav class="botoes-container">
+            <button class="botao ativo">Sala 1: Foco</button>
+            <button class="botao">Sala 2: Planejamento</button>
+            <button class="botao">Sala 3: Resiliência</button>
+            <button class="botao">Sala 4: Sucesso</button>
+        </nav>
+
+        <section class="conteudo-container">
+            
+            <div class="aba-conteudo ativo">
+                <h2>Missão 1: Revelar o Foco Oculto</h2>
+                <p>Existe um texto secreto na caixa abaixo. Use suas habilidades de CSS para mudar a cor do fundo da caixa para amarelo (<code>background-color: gold;</code>) para conseguir ler a chave!</p>
+                
+                <div class="cronometro-box">
+                    <span>Tempo restante para o Objetivo 1:</span>
+                    <div class="contador">Carregando...</div>
+                </div>
+
+                <div class="puzzle-container">
+                    <div class="preview-box" id="preview1">CHAVE-MESTRE: DESENVOLVIMENTO</div>
+                    <input type="text" class="css-input" id="input1" placeholder="Digite seu código CSS aqui... (ex: background-color: gold;)">
+                    <button class="verificar-btn" onclick="verificarSala1()">Aplicar Estilo e Verificar</button>
+                </div>
+            </div>
+
+            <div class="aba-conteudo">
+                <h2>Missão 2: Organizando o Futuro</h2>
+                <p>Defina suas metas a médio prazo. Resolva o próximo enigma lógico para liberar o acesso.</p>
+                <div class="cronometro-box">
+                    <span>Tempo restante para o Objetivo 2:</span>
+                    <div class="contador">Carregando...</div>
+                </div>
+                <p class="placeholder-texto">🔒 Trancado. Decifre a Sala 1 primeiro!</p>
+            </div>
+
+            <div class="aba-conteudo">
+                <h2>Missão 3: Superando Obstáculos</h2>
+                <p>A jornada do Projeto de Vida exige resiliência. Não desista!</p>
+                <div class="cronometro-box">
+                    <span>Tempo restante para o Objetivo 3:</span>
+                    <div class="contador">Carregando...</div>
+                </div>
+            </div>
+
+            <div class="aba-conteudo">
+                <h2>Missão 4: O Grande Alvo</h2>
+                <p>Parabéns por chegar até aqui. O sucesso é a soma de pequenos esforços diários.</p>
+                <div class="cronometro-box">
+                    <span>Tempo restante para o Objetivo 4:</span>
+                    <div class="contador">Carregando...</div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

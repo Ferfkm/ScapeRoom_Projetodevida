@@ -1,0 +1,152 @@
+/* Estilo Base */
+body {
+    background-color: #121214;
+    color: #e1e1e6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: #00ff87;
+    text-shadow: 0 0 10px rgba(0, 255, 135, 0.4);
+}
+
+/* Container das Abas/Botões */
+.botoes-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.botao {
+    background-color: #202024;
+    color: #a8a8b3;
+    border: 2px solid #29292e;
+    padding: 12px 24px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.botao:hover {
+    background-color: #29292e;
+    color: #ffffff;
+}
+
+/* Aba ativa estilizada em verde Neon */
+.botao.ativo {
+    background-color: #00ff87;
+    color: #121214;
+    border-color: #00ff87;
+    box-shadow: 0 0 15px rgba(0, 255, 135, 0.4);
+}
+
+/* Container do Conteúdo */
+.conteudo-container {
+    background-color: #202024;
+    border: 1px solid #29292e;
+    border-radius: 8px;
+    padding: 30px;
+    width: 100%;
+    max-width: 650px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Esconde as abas inativas e mostra a ativa */
+.aba-conteudo {
+    display: none;
+}
+
+.aba-conteudo.ativo {
+    display: block;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Caixas de Cronômetro */
+.cronometro-box {
+    background-color: #121214;
+    border-left: 4px solid #ff0055;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+.contador {
+    font-size: 1.2rem;
+    font-family: 'Courier New', Courier, monospace;
+    color: #ff0055;
+    font-weight: bold;
+    margin-top: 5px;
+    text-shadow: 0 0 5px rgba(255, 0, 85, 0.4);
+}
+
+/* Mecânica do Customizador (Sala 1) */
+.puzzle-container {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.preview-box {
+    height: 100px;
+    background-color: #29292e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border-radius: 6px;
+    border: 2px dashed #48484a;
+    /* Truque: o texto começa com a mesma cor do fundo padrão para ficar "invisível" */
+    color: #29292e; 
+    transition: all 0.3s ease;
+}
+
+.css-input {
+    background-color: #121214;
+    border: 1px solid #48484a;
+    color: #00ff87;
+    padding: 12px;
+    font-family: monospace;
+    font-size: 1rem;
+    border-radius: 6px;
+    outline: none;
+}
+
+.css-input:focus {
+    border-color: #00ff87;
+}
+
+.verificar-btn {
+    background-color: #00ff87;
+    color: #121214;
+    border: none;
+    padding: 12px;
+    font-weight: bold;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.verificar-btn:hover {
+    background-color: #00cc6a;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
